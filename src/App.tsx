@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Calculator, Truck } from 'lucide-react';
 import {
   calculateEstimate,
@@ -82,6 +82,7 @@ export default function App() {
   const [mode, setMode] = useState<ParcelMode>('lightweight');
   const [parcelDimensions, setParcelDimensions] = useState<Dimensions>({ length: 1.2, breadth: 0.8, height: 0.6 });
   const [parcelWeight, setParcelWeight] = useState(750);
+  const summaryRef = useRef<HTMLElement>(null);
 
   const lengthLabel = getLengthUnit(lengthUnit).label;
   const volumeLabel = getLengthUnit(lengthUnit).volumeLabel;
@@ -174,7 +175,7 @@ export default function App() {
           )}
         </form>
 
-        <section className="card summary">
+        <section className="card summary" ref={summaryRef}>
           <div className="summaryHeader"><Calculator aria-hidden="true" /><h2>Pricing summary</h2></div>
           <dl>
             <div><dt>Truck volume</dt><dd>{convertCubicMetresToUnit(estimate.truckVolume, lengthUnit).toFixed(2)} {volumeLabel}</dd></div>
@@ -187,6 +188,16 @@ export default function App() {
           <p className="formula">Formula uses metres/kg internally: operating cost + 18% markup + ₹1,200 per cu m or ₹25 per kg.</p>
         </section>
       </section>
+
+      <button
+        type="button"
+        className="stickyPrice"
+        onClick={() => summaryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+        aria-label={`Estimated price ${currency.format(estimate.estimatedPrice)}. Tap to view full pricing breakdown.`}
+      >
+        <span>Estimated price</span>
+        <strong aria-live="polite">{currency.format(estimate.estimatedPrice)}</strong>
+      </button>
     </main>
   );
 }
