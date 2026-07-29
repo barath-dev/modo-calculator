@@ -1,13 +1,12 @@
 # Modo Truck Pricing Calculator
 
-A mobile-first PWA for estimating client parcel pricing in rupees from truck capacity, operating costs, and lightweight or heavy parcel details.
+A mobile-first PWA for estimating client parcel freight in rupees per cubic foot, based on truck volume, route operating costs, and a desired revenue target for a fully loaded truck.
 
 ## Features
 
-- Truck height, length, breadth, and maximum weight inputs.
-- Fuel, driver wage, and miscellaneous cost capture in Indian rupees.
-- Lightweight parcel mode with dimensional validation, small and large unit switching (`cm`, `m`, `in`, `ft`, `kg`, `lb`), and volume pricing.
-- Heavy parcel mode with weight-capacity validation and weight pricing.
+- Truck length, breadth, and height inputs, in feet.
+- Truck hire cost, loading & unloading cost, and desired revenue (for a full truck) capture in Indian rupees.
+- Parcel dimension inputs with capacity validation against the truck's volume.
 - Offline app shell caching through a service worker.
 - Installable PWA metadata in `public/manifest.webmanifest`.
 
@@ -16,10 +15,11 @@ A mobile-first PWA for estimating client parcel pricing in rupees from truck cap
 The estimate is calculated as:
 
 ```text
-operational cost + 18% markup + variable parcel charge
+rate per cu ft = desired revenue ÷ truck volume
+freight        = parcel volume × rate per cu ft
 ```
 
-The app accepts dimensions in `cm`, `m`, `in`, or `ft` and weights in `kg` or `lb`, then normalizes calculations to metres and kilograms. The variable parcel charge is `₹1,200 per cubic metre` for lightweight parcels and `₹25 per kilogram` for heavy parcels. These constants live in `src/calculations.ts`.
+Truck volume and parcel volume are each `length × breadth × height`, in cubic feet. Truck hire cost and loading/unloading cost are captured for reference as the total operating cost, but do not feed into the freight formula. These calculations live in `src/calculations.ts`.
 
 ## Run locally
 
