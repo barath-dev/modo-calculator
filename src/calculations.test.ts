@@ -1,82 +1,45 @@
 import { describe, expect, it } from 'vitest';
-import {
-  calculateEstimate,
-  calculateTotalCost,
-  calculateVolume,
-  calculateVolumeInCubicMetres,
-  convertCubicMetresToUnit,
-  convertDimensions,
-  convertWeight,
-  getLengthUnit,
-  getWeightUnit,
-  validateHeavyParcelWeight,
-  validateParcelDimensions,
-} from './calculations';
+import { calculateEstimate, calculateRatePerCft, calculateTotalOperatingCost, calculateVolume, validateParcelDimensions } from './calculations';
 
-const truck = { length: 10, breadth: 4, height: 3, maxWeight: 1000 };
+const truck = { length: 25, breadth: 10, height: 10 };
 
 describe('pricing calculations', () => {
-  it('calculates lightweight parcel volume', () => {
+  it('calculates volume as length x breadth x height', () => {
     expect(calculateVolume({ length: 2, breadth: 3, height: 4 })).toBe(24);
   });
 
-  it('provides small and large length unit labels', () => {
-    expect(getLengthUnit('cm')).toMatchObject({ label: 'cm', volumeLabel: 'cu cm' });
-    expect(getLengthUnit('m')).toMatchObject({ label: 'm', volumeLabel: 'cu m' });
-    expect(getLengthUnit('inch')).toMatchObject({ label: 'in', volumeLabel: 'cu in' });
-    expect(getLengthUnit('ft')).toMatchObject({ label: 'ft', volumeLabel: 'cu ft' });
+  it('calculates total operating cost from truck hire and loading/unloading costs', () => {
+    expect(calculateTotalOperatingCost({ truckHireCost: 10000, loadingUnloadingCost: 4000 })).toBe(14000);
   });
 
-  it('provides weight unit labels', () => {
-    expect(getWeightUnit('kg')).toMatchObject({ label: 'kg' });
-    expect(getWeightUnit('lb')).toMatchObject({ label: 'lb' });
+  it('calculates the rate per cubic foot from desired revenue and truck volume', () => {
+    expect(calculateRatePerCft(25000, 2500)).toBe(10);
+    expect(calculateRatePerCft(25000, 0)).toBe(0);
   });
 
-  it('converts entered measurements to internal metric values', () => {
-    expect(convertDimensions({ length: 100, breadth: 50, height: 25 }, 'cm')).toEqual({ length: 1, breadth: 0.5, height: 0.25 });
-    expect(convertWeight(220.462, 'lb')).toBeCloseTo(100, 2);
-  });
-
-  it('converts volumes between cubic metres and the selected display unit', () => {
-    expect(calculateVolumeInCubicMetres({ length: 100, breadth: 100, height: 100 }, 'cm')).toBe(1);
-    expect(convertCubicMetresToUnit(1, 'cm')).toBe(1_000_000);
-  });
-
-  it('validates heavy parcel weight against truck capacity', () => {
-    expect(validateHeavyParcelWeight(1200, truck)).toContain('Parcel weight exceeds truck maximum weight capacity.');
-    expect(validateHeavyParcelWeight(900, truck)).toEqual([]);
-  });
-
-  it('validates parcel dimensions and capacity', () => {
-    expect(validateParcelDimensions({ length: 11, breadth: 5, height: 4 }, truck)).toEqual([
+  it('validates parcel dimensions and capacity against the truck', () => {
+    expect(validateParcelDimensions({ length: 30, breadth: 12, height: 11 }, truck)).toEqual([
       'Parcel length exceeds truck length.',
       'Parcel breadth exceeds truck breadth.',
       'Parcel height exceeds truck height.',
       'Parcel volume exceeds truck volume capacity.',
     ]);
+    expect(validateParcelDimensions({ length: 3, breadth: 2, height: 1 }, truck)).toEqual([]);
   });
 
-  it('calculates total operational cost', () => {
-    expect(calculateTotalCost({ fuelCost: 100, driverWages: 200, miscellaneous: 50 })).toBe(350);
-  });
+  it('generates a final estimate as parcel volume x rate per cft', () => {
+    const estimate = calculateEstimate({
+      truck: { length: 25, breadth: 10, height: 10 },
+      costs: { truckHireCost: 10000, loadingUnloadingCost: 4000 },
+      desiredRevenue: 25000,
+      parcel: { length: 3, breadth: 2, height: 1 },
+    });
 
-  it('generates final lightweight and heavy estimates in rupees', () => {
-    expect(
-      calculateEstimate({
-        mode: 'lightweight',
-        truck,
-        costs: { fuelCost: 100, driverWages: 100, miscellaneous: 50 },
-        parcelDimensions: { length: 1, breadth: 2, height: 3 },
-      }).estimatedPrice,
-    ).toBe(7495);
-
-    expect(
-      calculateEstimate({
-        mode: 'heavy',
-        truck,
-        costs: { fuelCost: 100, driverWages: 100, miscellaneous: 50 },
-        parcelWeight: 100,
-      }).estimatedPrice,
-    ).toBe(2795);
+    expect(estimate.truckVolume).toBe(2500);
+    expect(estimate.parcelVolume).toBe(6);
+    expect(estimate.totalOperatingCost).toBe(14000);
+    expect(estimate.ratePerCft).toBe(10);
+    expect(estimate.estimatedPrice).toBe(60);
+    expect(estimate.warnings).toEqual([]);
   });
 });

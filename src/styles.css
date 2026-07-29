@@ -147,51 +147,6 @@ h2 {
   white-space: nowrap;
 }
 
-.unitRow {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.6rem;
-  margin-bottom: 0.6rem;
-}
-
-@media (min-width: 420px) {
-  .unitRow {
-    grid-template-columns: 1fr 0.85fr;
-  }
-}
-
-.switchGroup {
-  display: grid;
-  gap: 0.3rem;
-  color: #31514f;
-  font-weight: 800;
-  font-size: 0.78rem;
-}
-
-.modeSwitch {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
-  gap: 0.3rem;
-}
-
-.modeSwitch button {
-  min-width: 0;
-  min-height: 44px;
-  border: 1px solid #99f6e4;
-  background: #f0fdfa;
-  border-radius: 999px;
-  padding: 0.5rem 0.4rem;
-  font-weight: 800;
-  color: #115e59;
-  white-space: nowrap;
-}
-
-.modeSwitch button.active {
-  background: #0f766e;
-  color: white;
-}
-
 .summary {
   background: #102f2d;
   color: #e7fffb;
@@ -366,11 +321,6 @@ dd {
   .inputWrap input {
     padding: clamp(0.45rem, 1.3vh, 0.8rem) 0.6rem;
     font-size: inherit;
-  }
-
-  .modeSwitch button {
-    min-height: 0;
-    padding: clamp(0.38rem, 1vh, 0.65rem) 0.35rem;
   }
 }
 
