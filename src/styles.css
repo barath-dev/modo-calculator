@@ -1,6 +1,6 @@
 :root {
   font-family: Inter, system-ui, sans-serif;
-  color: #123;
+  color: #123333;
   background: #ecfeff;
 }
 
@@ -11,12 +11,11 @@
 html,
 body,
 #root {
-  height: 100%;
+  min-height: 100%;
 }
 
 body {
   margin: 0;
-  overflow: hidden;
 }
 
 button,
@@ -24,14 +23,17 @@ input {
   font: inherit;
 }
 
+button {
+  touch-action: manipulation;
+}
+
 .appShell {
   min-height: 100dvh;
-  height: 100dvh;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  gap: clamp(0.5rem, 1.4vh, 1rem);
-  padding: clamp(0.5rem, 1.5vw, 1.25rem);
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 0.85rem;
+  padding-bottom: max(0.85rem, env(safe-area-inset-bottom));
 }
 
 .hero {
@@ -39,8 +41,7 @@ input {
   justify-content: space-between;
   gap: 0.75rem;
   align-items: center;
-  min-height: 0;
-  padding: clamp(0.75rem, 1.8vw, 1.2rem);
+  padding: 1rem;
   border-radius: 24px;
   background: linear-gradient(135deg, #0f766e, #14b8a6);
   color: white;
@@ -48,8 +49,8 @@ input {
 }
 
 .hero svg {
-  width: clamp(44px, 7vh, 72px);
-  height: clamp(44px, 7vh, 72px);
+  width: 48px;
+  height: 48px;
   flex: none;
 }
 
@@ -57,7 +58,7 @@ input {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-weight: 800;
-  font-size: clamp(0.64rem, 1.2vw, 0.78rem);
+  font-size: 0.7rem;
   margin: 0 0 0.25rem;
 }
 
@@ -68,61 +69,61 @@ p {
 }
 
 h1 {
-  font-size: clamp(1.45rem, 4.5vw, 3.2rem);
-  line-height: 0.95;
+  font-size: clamp(1.4rem, 6vw, 2.4rem);
+  line-height: 1.05;
   margin-bottom: 0.35rem;
 }
 
 h2 {
-  font-size: clamp(0.88rem, 1.6vw, 1.05rem);
+  font-size: 1rem;
   color: #0f3f3b;
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.5rem;
 }
 
 .hero p:last-child,
 .formula {
   margin-bottom: 0;
-  font-size: clamp(0.76rem, 1.4vw, 0.95rem);
+  font-size: 0.85rem;
 }
 
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: repeat(4, minmax(0, 1fr));
-  gap: clamp(0.45rem, 1.2vh, 0.8rem);
-  min-height: 0;
-  overflow: hidden;
+  gap: 0.85rem;
 }
 
 .card {
-  min-height: 0;
-  overflow: hidden;
   background: #fff;
   border: 1px solid #ccfbf1;
   border-radius: 20px;
-  padding: clamp(0.6rem, 1.4vw, 1rem);
+  padding: 1rem;
   box-shadow: 0 8px 24px #134e4a14;
 }
 
 .fieldGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.45rem;
+  gap: 0.6rem;
+}
+
+@media (max-width: 380px) {
+  .fieldGrid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .field {
   display: grid;
-  gap: 0.25rem;
+  gap: 0.3rem;
   margin: 0;
   color: #31514f;
   font-weight: 700;
-  font-size: clamp(0.72rem, 1.2vw, 0.9rem);
+  font-size: 0.85rem;
 }
 
 .inputWrap {
   display: flex;
   align-items: center;
-  min-height: 0;
   border: 1px solid #b6e8df;
   border-radius: 14px;
   overflow: hidden;
@@ -134,45 +135,53 @@ h2 {
   min-width: 0;
   border: 0;
   background: transparent;
-  padding: clamp(0.45rem, 1.3vh, 0.8rem) 0.6rem;
-  color: #123;
+  padding: 0.75rem 0.6rem;
+  font-size: 1rem;
+  color: #123333;
   outline-color: #0f766e;
 }
 
 .inputWrap small {
-  padding-right: 0.55rem;
+  padding-right: 0.6rem;
   color: #5f7f7b;
   white-space: nowrap;
 }
 
 .unitRow {
   display: grid;
-  grid-template-columns: 1fr 0.72fr;
-  gap: 0.45rem;
-  margin-bottom: 0.45rem;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+@media (min-width: 420px) {
+  .unitRow {
+    grid-template-columns: 1fr 0.85fr;
+  }
 }
 
 .switchGroup {
   display: grid;
-  gap: 0.25rem;
+  gap: 0.3rem;
   color: #31514f;
   font-weight: 800;
-  font-size: clamp(0.68rem, 1vw, 0.82rem);
+  font-size: 0.78rem;
 }
 
 .modeSwitch {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(0, 1fr);
-  gap: 0.28rem;
+  gap: 0.3rem;
 }
 
 .modeSwitch button {
   min-width: 0;
+  min-height: 44px;
   border: 1px solid #99f6e4;
   background: #f0fdfa;
   border-radius: 999px;
-  padding: clamp(0.38rem, 1vh, 0.65rem) 0.35rem;
+  padding: 0.5rem 0.4rem;
   font-weight: 800;
   color: #115e59;
   white-space: nowrap;
@@ -184,8 +193,6 @@ h2 {
 }
 
 .summary {
-  display: grid;
-  grid-template-rows: auto auto minmax(0, auto) auto auto;
   background: #102f2d;
   color: #e7fffb;
 }
@@ -203,7 +210,7 @@ h2 {
 
 dl {
   display: grid;
-  gap: clamp(0.32rem, 0.9vh, 0.55rem);
+  gap: 0.5rem;
   margin: 0;
 }
 
@@ -212,8 +219,8 @@ dl div {
   justify-content: space-between;
   gap: 0.75rem;
   border-bottom: 1px solid #2d5a56;
-  padding-bottom: clamp(0.28rem, 0.8vh, 0.5rem);
-  font-size: clamp(0.72rem, 1.2vw, 0.9rem);
+  padding-bottom: 0.45rem;
+  font-size: 0.88rem;
 }
 
 dd {
@@ -227,9 +234,9 @@ dd {
   background: #451a03;
   color: #fffbeb;
   border-radius: 14px;
-  padding: 0.55rem;
-  margin: 0.55rem 0;
-  font-size: clamp(0.68rem, 1.1vw, 0.82rem);
+  padding: 0.6rem;
+  margin: 0.6rem 0;
+  font-size: 0.82rem;
 }
 
 .warnings p {
@@ -238,29 +245,78 @@ dd {
 
 .price {
   display: grid;
-  gap: 0.15rem;
-  margin-top: 0.55rem;
-  padding: clamp(0.55rem, 1.2vh, 0.9rem);
+  gap: 0.2rem;
+  margin-top: 0.6rem;
+  padding: 0.9rem;
   border-radius: 16px;
   background: #14b8a6;
   color: #042f2e;
 }
 
 .price strong {
-  font-size: clamp(1.35rem, 3.6vw, 2.2rem);
+  font-size: clamp(1.5rem, 6vw, 2rem);
   line-height: 1;
 }
 
 .formula {
   color: #bffdf3;
-  margin-top: 0.45rem;
-  font-size: clamp(0.64rem, 1.1vw, 0.82rem);
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
 }
 
+/* Larger screens get a compact single-screen dashboard layout instead of a scrolling page. */
 @media (min-width: 760px) {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .appShell {
+    height: 100dvh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: clamp(0.5rem, 1.4vh, 1rem);
+    padding: clamp(0.5rem, 1.5vw, 1.25rem);
+    overflow: hidden;
+  }
+
+  .hero {
+    min-height: 0;
+    padding: clamp(0.75rem, 1.8vw, 1.2rem);
+  }
+
+  .hero svg {
+    width: clamp(44px, 7vh, 72px);
+    height: clamp(44px, 7vh, 72px);
+  }
+
+  h1 {
+    font-size: clamp(1.45rem, 4.5vw, 3.2rem);
+  }
+
+  h2 {
+    font-size: clamp(0.88rem, 1.6vw, 1.05rem);
+  }
+
   .grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(0.45rem, 1.2vh, 0.8rem);
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .card {
+    min-height: 0;
+    overflow: hidden;
+    border-radius: 16px;
+    padding: clamp(0.6rem, 1.4vw, 1rem);
   }
 
   .summary {
@@ -271,15 +327,21 @@ dd {
   .parcelCard {
     grid-column: 1;
   }
-}
 
-@media (max-height: 680px) {
-  .hero p:last-child {
-    display: none;
+  .inputWrap input {
+    padding: clamp(0.45rem, 1.3vh, 0.8rem) 0.6rem;
+    font-size: inherit;
   }
 
-  .card {
-    border-radius: 16px;
+  .modeSwitch button {
+    min-height: 0;
+    padding: clamp(0.38rem, 1vh, 0.65rem) 0.35rem;
+  }
+}
+
+@media (min-width: 760px) and (max-height: 680px) {
+  .hero p:last-child {
+    display: none;
   }
 
   .warnings p:nth-of-type(n + 3) {
