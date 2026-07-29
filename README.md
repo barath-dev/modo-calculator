@@ -6,7 +6,7 @@ A mobile-first PWA for estimating client parcel pricing in rupees from truck cap
 
 - Truck height, length, breadth, and maximum weight inputs.
 - Fuel, driver wage, and miscellaneous cost capture in Indian rupees.
-- Lightweight parcel mode with dimensional validation, metric/imperial unit labels, and volume pricing.
+- Lightweight parcel mode with dimensional validation, small and large unit switching (`cm`, `m`, `in`, `ft`, `kg`, `lb`), and volume pricing.
 - Heavy parcel mode with weight-capacity validation and weight pricing.
 - Offline app shell caching through a service worker.
 - Installable PWA metadata in `public/manifest.webmanifest`.
@@ -19,7 +19,7 @@ The estimate is calculated as:
 operational cost + 18% markup + variable parcel charge
 ```
 
-The variable parcel charge is `₹1,200 per cubic unit` for lightweight parcels and `₹25 per weight unit` for heavy parcels. These constants live in `src/calculations.ts`.
+The app accepts dimensions in `cm`, `m`, `in`, or `ft` and weights in `kg` or `lb`, then normalizes calculations to metres and kilograms. The variable parcel charge is `₹1,200 per cubic metre` for lightweight parcels and `₹25 per kilogram` for heavy parcels. These constants live in `src/calculations.ts`.
 
 ## Run locally
 

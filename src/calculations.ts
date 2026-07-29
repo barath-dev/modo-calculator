@@ -1,5 +1,6 @@
 export type ParcelMode = 'lightweight' | 'heavy';
-export type MeasurementSystem = 'metric' | 'imperial';
+export type LengthUnit = 'cm' | 'm' | 'inch' | 'ft';
+export type WeightUnit = 'kg' | 'lb';
 
 export interface Dimensions {
   length: number;
@@ -24,10 +25,10 @@ export interface PricingConfig {
   currencyCode: 'INR';
 }
 
-export interface UnitLabels {
-  distance: string;
-  volume: string;
-  weight: string;
+export interface UnitProfile {
+  label: string;
+  volumeLabel: string;
+  toMetres: number;
 }
 
 export const defaultPricingConfig: PricingConfig = {
@@ -37,15 +38,41 @@ export const defaultPricingConfig: PricingConfig = {
   currencyCode: 'INR',
 };
 
-export const unitLabels: Record<MeasurementSystem, UnitLabels> = {
-  metric: { distance: 'm', volume: 'cu m', weight: 'kg' },
-  imperial: { distance: 'ft', volume: 'cu ft', weight: 'lb' },
+export const lengthUnits: Record<LengthUnit, UnitProfile> = {
+  cm: { label: 'cm', volumeLabel: 'cu cm', toMetres: 0.01 },
+  m: { label: 'm', volumeLabel: 'cu m', toMetres: 1 },
+  inch: { label: 'in', volumeLabel: 'cu in', toMetres: 0.0254 },
+  ft: { label: 'ft', volumeLabel: 'cu ft', toMetres: 0.3048 },
 };
 
-export const getUnitLabels = (system: MeasurementSystem): UnitLabels => unitLabels[system];
+export const weightUnits: Record<WeightUnit, { label: string; toKg: number }> = {
+  kg: { label: 'kg', toKg: 1 },
+  lb: { label: 'lb', toKg: 0.45359237 },
+};
+
+export const getLengthUnit = (unit: LengthUnit): UnitProfile => lengthUnits[unit];
+export const getWeightUnit = (unit: WeightUnit): { label: string; toKg: number } => weightUnits[unit];
+
+export const convertDimensions = (dimensions: Dimensions, unit: LengthUnit): Dimensions => {
+  const multiplier = getLengthUnit(unit).toMetres;
+  return {
+    length: Math.max(0, dimensions.length) * multiplier,
+    breadth: Math.max(0, dimensions.breadth) * multiplier,
+    height: Math.max(0, dimensions.height) * multiplier,
+  };
+};
+
+export const convertWeight = (weight: number, unit: WeightUnit): number => Math.max(0, weight) * getWeightUnit(unit).toKg;
 
 export const calculateVolume = ({ length, breadth, height }: Dimensions): number =>
   Math.max(0, length) * Math.max(0, breadth) * Math.max(0, height);
+
+export const calculateVolumeInCubicMetres = (dimensions: Dimensions, unit: LengthUnit): number => calculateVolume(convertDimensions(dimensions, unit));
+
+export const convertCubicMetresToUnit = (volume: number, unit: LengthUnit): number => {
+  const multiplier = getLengthUnit(unit).toMetres;
+  return Math.max(0, volume) / multiplier ** 3;
+};
 
 export const calculateTotalCost = ({ fuelCost, driverWages, miscellaneous }: CostFactors): number =>
   Math.max(0, fuelCost) + Math.max(0, driverWages) + Math.max(0, miscellaneous);

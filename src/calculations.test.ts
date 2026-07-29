@@ -1,5 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { calculateEstimate, calculateTotalCost, calculateVolume, getUnitLabels, validateHeavyParcelWeight, validateParcelDimensions } from './calculations';
+import {
+  calculateEstimate,
+  calculateTotalCost,
+  calculateVolume,
+  calculateVolumeInCubicMetres,
+  convertCubicMetresToUnit,
+  convertDimensions,
+  convertWeight,
+  getLengthUnit,
+  getWeightUnit,
+  validateHeavyParcelWeight,
+  validateParcelDimensions,
+} from './calculations';
 
 const truck = { length: 10, breadth: 4, height: 3, maxWeight: 1000 };
 
@@ -8,9 +20,26 @@ describe('pricing calculations', () => {
     expect(calculateVolume({ length: 2, breadth: 3, height: 4 })).toBe(24);
   });
 
-  it('provides metric and imperial unit labels', () => {
-    expect(getUnitLabels('metric')).toEqual({ distance: 'm', volume: 'cu m', weight: 'kg' });
-    expect(getUnitLabels('imperial')).toEqual({ distance: 'ft', volume: 'cu ft', weight: 'lb' });
+  it('provides small and large length unit labels', () => {
+    expect(getLengthUnit('cm')).toMatchObject({ label: 'cm', volumeLabel: 'cu cm' });
+    expect(getLengthUnit('m')).toMatchObject({ label: 'm', volumeLabel: 'cu m' });
+    expect(getLengthUnit('inch')).toMatchObject({ label: 'in', volumeLabel: 'cu in' });
+    expect(getLengthUnit('ft')).toMatchObject({ label: 'ft', volumeLabel: 'cu ft' });
+  });
+
+  it('provides weight unit labels', () => {
+    expect(getWeightUnit('kg')).toMatchObject({ label: 'kg' });
+    expect(getWeightUnit('lb')).toMatchObject({ label: 'lb' });
+  });
+
+  it('converts entered measurements to internal metric values', () => {
+    expect(convertDimensions({ length: 100, breadth: 50, height: 25 }, 'cm')).toEqual({ length: 1, breadth: 0.5, height: 0.25 });
+    expect(convertWeight(220.462, 'lb')).toBeCloseTo(100, 2);
+  });
+
+  it('converts volumes between cubic metres and the selected display unit', () => {
+    expect(calculateVolumeInCubicMetres({ length: 100, breadth: 100, height: 100 }, 'cm')).toBe(1);
+    expect(convertCubicMetresToUnit(1, 'cm')).toBe(1_000_000);
   });
 
   it('validates heavy parcel weight against truck capacity', () => {
@@ -31,7 +60,7 @@ describe('pricing calculations', () => {
     expect(calculateTotalCost({ fuelCost: 100, driverWages: 200, miscellaneous: 50 })).toBe(350);
   });
 
-  it('generates final lightweight and heavy estimates', () => {
+  it('generates final lightweight and heavy estimates in rupees', () => {
     expect(
       calculateEstimate({
         mode: 'lightweight',
