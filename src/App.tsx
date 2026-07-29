@@ -45,7 +45,14 @@ function NumberField({ label, value, onChange, suffix }: { label: string; value:
     <label className="field">
       <span>{label}</span>
       <div className="inputWrap">
-        <input type="number" min="0" step="0.01" value={value || ''} onChange={(event) => onChange(Number(event.target.value))} />
+        <input
+          type="number"
+          inputMode="decimal"
+          min="0"
+          step="0.01"
+          value={value || ''}
+          onChange={(event) => onChange(Number(event.target.value))}
+        />
         {suffix && <small>{suffix}</small>}
       </div>
     </label>
