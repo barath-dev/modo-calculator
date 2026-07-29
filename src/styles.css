@@ -1,0 +1,298 @@
+:root {
+  font-family: Inter, system-ui, sans-serif;
+  color: #123333;
+  background: #ecfeff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.appShell {
+  height: 100vh;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  overflow: hidden;
+}
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: center;
+  min-height: 0;
+  padding: 0.9rem;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #0f766e, #14b8a6);
+  color: #ffffff;
+  box-shadow: 0 16px 32px rgba(15, 118, 110, 0.2);
+}
+
+.hero svg {
+  width: 58px;
+  height: 58px;
+  flex: none;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 800;
+  font-size: 0.7rem;
+  margin: 0 0 0.25rem;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 2rem;
+  line-height: 0.95;
+  margin-bottom: 0.35rem;
+}
+
+h2 {
+  font-size: 1rem;
+  color: #0f3f3b;
+  margin-bottom: 0.45rem;
+}
+
+.hero p:last-child,
+.formula {
+  margin-bottom: 0;
+  font-size: 0.88rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.card {
+  min-height: 0;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #ccfbf1;
+  border-radius: 18px;
+  padding: 0.75rem;
+  box-shadow: 0 8px 24px rgba(19, 78, 74, 0.08);
+}
+
+.fieldGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  color: #31514f;
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.inputWrap {
+  display: flex;
+  align-items: center;
+  min-height: 0;
+  border: 1px solid #b6e8df;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f8fffe;
+}
+
+.inputWrap input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 0.55rem 0.6rem;
+  color: #123333;
+  outline-color: #0f766e;
+}
+
+.inputWrap small {
+  padding-right: 0.55rem;
+  color: #5f7f7b;
+  white-space: nowrap;
+}
+
+.unitRow {
+  display: grid;
+  grid-template-columns: 1fr 0.72fr;
+  gap: 0.45rem;
+  margin-bottom: 0.45rem;
+}
+
+.switchGroup {
+  display: grid;
+  gap: 0.25rem;
+  color: #31514f;
+  font-weight: 800;
+  font-size: 0.76rem;
+}
+
+.modeSwitch {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 0.28rem;
+}
+
+.modeSwitch button {
+  min-width: 0;
+  border: 1px solid #99f6e4;
+  background: #f0fdfa;
+  border-radius: 999px;
+  padding: 0.48rem 0.35rem;
+  font-weight: 800;
+  color: #115e59;
+  white-space: nowrap;
+}
+
+.modeSwitch button.active {
+  background: #0f766e;
+  color: #ffffff;
+}
+
+.summary {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, auto) auto auto;
+  background: #102f2d;
+  color: #e7fffb;
+}
+
+.summary h2,
+.summary dt {
+  color: #bffdf3;
+}
+
+.summaryHeader {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+dl {
+  display: grid;
+  gap: 0.42rem;
+  margin: 0;
+}
+
+dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-bottom: 1px solid #2d5a56;
+  padding-bottom: 0.38rem;
+  font-size: 0.84rem;
+}
+
+dd {
+  margin: 0;
+  font-weight: 800;
+  text-align: right;
+}
+
+.warnings {
+  border: 1px solid #fbbf24;
+  background: #451a03;
+  color: #fffbeb;
+  border-radius: 14px;
+  padding: 0.55rem;
+  margin: 0.55rem 0;
+  font-size: 0.78rem;
+}
+
+.warnings p {
+  margin: 0.25rem 0 0;
+}
+
+.price {
+  display: grid;
+  gap: 0.15rem;
+  margin-top: 0.55rem;
+  padding: 0.75rem;
+  border-radius: 16px;
+  background: #14b8a6;
+  color: #042f2e;
+}
+
+.price strong {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.formula {
+  color: #bffdf3;
+  margin-top: 0.45rem;
+  font-size: 0.74rem;
+}
+
+@media (min-width: 760px) {
+  .appShell {
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 2.8rem;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .summary {
+    grid-row: 1 / span 2;
+    grid-column: 2;
+  }
+
+  .parcelCard {
+    grid-column: 1;
+  }
+}
+
+@media (max-height: 680px) {
+  .hero p:last-child {
+    display: none;
+  }
+
+  .card {
+    border-radius: 16px;
+    padding: 0.55rem;
+  }
+
+  .warnings p:nth-of-type(n + 3) {
+    display: none;
+  }
+}
