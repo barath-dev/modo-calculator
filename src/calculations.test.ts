@@ -1,11 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { calculateEstimate, calculateTotalCost, calculateVolume, validateHeavyParcelWeight, validateParcelDimensions } from './calculations';
+import { calculateEstimate, calculateTotalCost, calculateVolume, getUnitLabels, validateHeavyParcelWeight, validateParcelDimensions } from './calculations';
 
 const truck = { length: 10, breadth: 4, height: 3, maxWeight: 1000 };
 
 describe('pricing calculations', () => {
   it('calculates lightweight parcel volume', () => {
     expect(calculateVolume({ length: 2, breadth: 3, height: 4 })).toBe(24);
+  });
+
+  it('provides metric and imperial unit labels', () => {
+    expect(getUnitLabels('metric')).toEqual({ distance: 'm', volume: 'cu m', weight: 'kg' });
+    expect(getUnitLabels('imperial')).toEqual({ distance: 'ft', volume: 'cu ft', weight: 'lb' });
   });
 
   it('validates heavy parcel weight against truck capacity', () => {
@@ -34,7 +39,7 @@ describe('pricing calculations', () => {
         costs: { fuelCost: 100, driverWages: 100, miscellaneous: 50 },
         parcelDimensions: { length: 1, breadth: 2, height: 3 },
       }).estimatedPrice,
-    ).toBe(367);
+    ).toBe(7490);
 
     expect(
       calculateEstimate({
@@ -43,6 +48,6 @@ describe('pricing calculations', () => {
         costs: { fuelCost: 100, driverWages: 100, miscellaneous: 50 },
         parcelWeight: 100,
       }).estimatedPrice,
-    ).toBe(545);
+    ).toBe(5450);
   });
 });

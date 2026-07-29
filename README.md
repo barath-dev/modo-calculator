@@ -1,12 +1,12 @@
 # Modo Truck Pricing Calculator
 
-A mobile-first PWA for estimating client parcel pricing from truck capacity, operating costs, and lightweight or heavy parcel details.
+A mobile-first PWA for estimating client parcel pricing in rupees from truck capacity, operating costs, and lightweight or heavy parcel details.
 
 ## Features
 
 - Truck height, length, breadth, and maximum weight inputs.
-- Fuel, driver wage, and miscellaneous cost capture.
-- Lightweight parcel mode with dimensional validation and volume pricing.
+- Fuel, driver wage, and miscellaneous cost capture in Indian rupees.
+- Lightweight parcel mode with dimensional validation, metric/imperial unit labels, and volume pricing.
 - Heavy parcel mode with weight-capacity validation and weight pricing.
 - Offline app shell caching through a service worker.
 - Installable PWA metadata in `public/manifest.webmanifest`.
@@ -19,7 +19,7 @@ The estimate is calculated as:
 operational cost + 18% markup + variable parcel charge
 ```
 
-The variable parcel charge is `$12 per cubic foot` for lightweight parcels and `$2.50 per kg` for heavy parcels. These constants live in `src/calculations.ts`.
+The variable parcel charge is `₹1,200 per cubic unit` for lightweight parcels and `₹25 per weight unit` for heavy parcels. These constants live in `src/calculations.ts`.
 
 ## Run locally
 

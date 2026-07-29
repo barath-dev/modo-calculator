@@ -1,4 +1,5 @@
 export type ParcelMode = 'lightweight' | 'heavy';
+export type MeasurementSystem = 'metric' | 'imperial';
 
 export interface Dimensions {
   length: number;
@@ -20,13 +21,28 @@ export interface PricingConfig {
   baseMarkupRate: number;
   volumeRate: number;
   weightRate: number;
+  currencyCode: 'INR';
+}
+
+export interface UnitLabels {
+  distance: string;
+  volume: string;
+  weight: string;
 }
 
 export const defaultPricingConfig: PricingConfig = {
   baseMarkupRate: 0.18,
-  volumeRate: 12,
-  weightRate: 2.5,
+  volumeRate: 1200,
+  weightRate: 25,
+  currencyCode: 'INR',
 };
+
+export const unitLabels: Record<MeasurementSystem, UnitLabels> = {
+  metric: { distance: 'm', volume: 'cu m', weight: 'kg' },
+  imperial: { distance: 'ft', volume: 'cu ft', weight: 'lb' },
+};
+
+export const getUnitLabels = (system: MeasurementSystem): UnitLabels => unitLabels[system];
 
 export const calculateVolume = ({ length, breadth, height }: Dimensions): number =>
   Math.max(0, length) * Math.max(0, breadth) * Math.max(0, height);
