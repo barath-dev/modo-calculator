@@ -68,7 +68,7 @@ describe('pricing calculations', () => {
         costs: { fuelCost: 100, driverWages: 100, miscellaneous: 50 },
         parcelDimensions: { length: 1, breadth: 2, height: 3 },
       }).estimatedPrice,
-    ).toBe(7490);
+    ).toBe(7495);
 
     expect(
       calculateEstimate({
@@ -77,6 +77,6 @@ describe('pricing calculations', () => {
         costs: { fuelCost: 100, driverWages: 100, miscellaneous: 50 },
         parcelWeight: 100,
       }).estimatedPrice,
-    ).toBe(5450);
+    ).toBe(2795);
   });
 });

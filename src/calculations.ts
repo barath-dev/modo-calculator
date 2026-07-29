@@ -71,7 +71,7 @@ export const calculateVolumeInCubicMetres = (dimensions: Dimensions, unit: Lengt
 
 export const convertCubicMetresToUnit = (volume: number, unit: LengthUnit): number => {
   const multiplier = getLengthUnit(unit).toMetres;
-  return Math.max(0, volume) / multiplier ** 3;
+  return Math.round((Math.max(0, volume) / multiplier ** 3) * 1e6) / 1e6;
 };
 
 export const calculateTotalCost = ({ fuelCost, driverWages, miscellaneous }: CostFactors): number =>
