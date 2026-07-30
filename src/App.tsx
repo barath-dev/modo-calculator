@@ -1,9 +1,23 @@
 import { useMemo, useRef, useState } from 'react';
 import { Calculator, Truck } from 'lucide-react';
-import { calculateEstimate, Dimensions, RouteCosts } from './calculations';
+import { calculateEstimate, convertDimensionsToFeet, Dimensions, lengthUnits, LengthUnit, RouteCosts } from './calculations';
 import './styles.css';
 
 const currency = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' });
+const parcelUnitChoices: LengthUnit[] = ['ft', 'in'];
+
+const roundMeasurement = (value: number): number => Math.round(value * 1000) / 1000;
+
+const convertDimensionsForDisplay = (dimensions: Dimensions, from: LengthUnit, to: LengthUnit): Dimensions => {
+  const fromFeet = lengthUnits[from].toFeet;
+  const toFeet = lengthUnits[to].toFeet;
+
+  return {
+    length: roundMeasurement((dimensions.length * fromFeet) / toFeet),
+    breadth: roundMeasurement((dimensions.breadth * fromFeet) / toFeet),
+    height: roundMeasurement((dimensions.height * fromFeet) / toFeet),
+  };
+};
 
 function NumberField({ label, value, onChange, suffix }: { label: string; value: number; onChange: (value: number) => void; suffix?: string }) {
   return (
@@ -24,16 +38,40 @@ function NumberField({ label, value, onChange, suffix }: { label: string; value:
   );
 }
 
+function SegmentedControl<T extends string>({ label, options, value, onChange, getLabel }: { label: string; options: T[]; value: T; onChange: (value: T) => void; getLabel: (value: T) => string }) {
+  return (
+    <div className="switchGroup">
+      <span>{label}</span>
+      <div className="modeSwitch" role="radiogroup" aria-label={label}>
+        {options.map((option) => (
+          <button key={option} type="button" className={value === option ? 'active' : ''} onClick={() => onChange(option)}>
+            {getLabel(option)}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [truck, setTruck] = useState<Dimensions>({ length: 32, breadth: 9, height: 8 });
   const [costs, setCosts] = useState<RouteCosts>({ truckHireCost: 10000, loadingUnloadingCost: 4000 });
   const [desiredRevenue, setDesiredRevenue] = useState(25000);
+  const [parcelUnit, setParcelUnit] = useState<LengthUnit>('ft');
   const [parcel, setParcel] = useState<Dimensions>({ length: 3, breadth: 2, height: 1 });
   const summaryRef = useRef<HTMLElement>(null);
 
+  const parcelUnitLabel = lengthUnits[parcelUnit].label;
+
+  const handleParcelUnitChange = (nextUnit: LengthUnit) => {
+    if (nextUnit === parcelUnit) return;
+    setParcel((currentParcel) => convertDimensionsForDisplay(currentParcel, parcelUnit, nextUnit));
+    setParcelUnit(nextUnit);
+  };
+
   const estimate = useMemo(
-    () => calculateEstimate({ truck, costs, desiredRevenue, parcel }),
-    [truck, costs, desiredRevenue, parcel],
+    () => calculateEstimate({ truck, costs, desiredRevenue, parcel: convertDimensionsToFeet(parcel, parcelUnit) }),
+    [truck, costs, desiredRevenue, parcel, parcelUnit],
   );
 
   return (
@@ -68,10 +106,13 @@ export default function App() {
 
         <form className="card parcelCard">
           <h2>Client parcel details</h2>
+          <div className="unitRow">
+            <SegmentedControl label="Size unit" options={parcelUnitChoices} value={parcelUnit} onChange={handleParcelUnitChange} getLabel={(unit) => lengthUnits[unit].label} />
+          </div>
           <div className="fieldGrid">
-            <NumberField label="Length" suffix="ft" value={parcel.length} onChange={(length) => setParcel({ ...parcel, length })} />
-            <NumberField label="Breadth" suffix="ft" value={parcel.breadth} onChange={(breadth) => setParcel({ ...parcel, breadth })} />
-            <NumberField label="Height" suffix="ft" value={parcel.height} onChange={(height) => setParcel({ ...parcel, height })} />
+            <NumberField label="Length" suffix={parcelUnitLabel} value={parcel.length} onChange={(length) => setParcel({ ...parcel, length })} />
+            <NumberField label="Breadth" suffix={parcelUnitLabel} value={parcel.breadth} onChange={(breadth) => setParcel({ ...parcel, breadth })} />
+            <NumberField label="Height" suffix={parcelUnitLabel} value={parcel.height} onChange={(height) => setParcel({ ...parcel, height })} />
           </div>
         </form>
 

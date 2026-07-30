@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { calculateEstimate, calculateRatePerCft, calculateTotalOperatingCost, calculateVolume, validateParcelDimensions } from './calculations';
+import { calculateEstimate, calculateRatePerCft, calculateTotalOperatingCost, calculateVolume, convertDimensionsToFeet, validateParcelDimensions } from './calculations';
 
 const truck = { length: 25, breadth: 10, height: 10 };
 
@@ -25,6 +25,11 @@ describe('pricing calculations', () => {
       'Parcel volume exceeds truck volume capacity.',
     ]);
     expect(validateParcelDimensions({ length: 3, breadth: 2, height: 1 }, truck)).toEqual([]);
+  });
+
+  it('converts parcel dimensions entered in inches to feet', () => {
+    expect(convertDimensionsToFeet({ length: 36, breadth: 24, height: 12 }, 'in')).toEqual({ length: 3, breadth: 2, height: 1 });
+    expect(convertDimensionsToFeet({ length: 3, breadth: 2, height: 1 }, 'ft')).toEqual({ length: 3, breadth: 2, height: 1 });
   });
 
   it('generates a final estimate as parcel volume x rate per cft', () => {

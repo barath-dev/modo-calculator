@@ -4,6 +4,22 @@ export interface Dimensions {
   height: number;
 }
 
+export type LengthUnit = 'ft' | 'in';
+
+export const lengthUnits: Record<LengthUnit, { label: string; toFeet: number }> = {
+  ft: { label: 'ft', toFeet: 1 },
+  in: { label: 'in', toFeet: 1 / 12 },
+};
+
+export const convertDimensionsToFeet = (dimensions: Dimensions, unit: LengthUnit): Dimensions => {
+  const multiplier = lengthUnits[unit].toFeet;
+  return {
+    length: Math.max(0, dimensions.length) * multiplier,
+    breadth: Math.max(0, dimensions.breadth) * multiplier,
+    height: Math.max(0, dimensions.height) * multiplier,
+  };
+};
+
 export interface RouteCosts {
   truckHireCost: number;
   loadingUnloadingCost: number;

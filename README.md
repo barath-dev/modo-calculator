@@ -6,7 +6,7 @@ A mobile-first PWA for estimating client parcel freight in rupees per cubic foot
 
 - Truck length, breadth, and height inputs, in feet.
 - Truck hire cost, loading & unloading cost, and desired revenue (for a full truck) capture in Indian rupees.
-- Parcel dimension inputs with capacity validation against the truck's volume.
+- Parcel dimension inputs with a feet/inches unit switch (parcels are often measured in inches) and capacity validation against the truck's volume.
 - Offline app shell caching through a service worker.
 - Installable PWA metadata in `public/manifest.webmanifest`.
 
@@ -19,7 +19,7 @@ rate per cu ft = desired revenue ÷ truck volume
 freight        = parcel volume × rate per cu ft
 ```
 
-Truck volume and parcel volume are each `length × breadth × height`, in cubic feet. Truck hire cost and loading/unloading cost are captured for reference as the total operating cost, but do not feed into the freight formula. These calculations live in `src/calculations.ts`.
+Truck volume and parcel volume are each `length × breadth × height`, in cubic feet. The truck is always entered in feet; the parcel can be entered in feet or inches and is converted to feet before its volume is calculated, so it stays consistent with the truck volume. Truck hire cost and loading/unloading cost are captured for reference as the total operating cost, but do not feed into the freight formula. These calculations live in `src/calculations.ts`.
 
 ## Run locally
 
